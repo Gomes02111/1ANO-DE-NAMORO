@@ -12,9 +12,8 @@
         :root {
             --primary-color: #be29ec; /* Roxo vibrante */
             --secondary-color: #ff69b4; /* Rosa choque */
-            --background-dark: #0a0a0a; /* Preto quase sólido */
+            --background-dark: #0a0a0a;
             --text-light: #f0f0f0;
-            --card-bg: rgba(255, 255, 255, 0.05);
             --card-shadow: rgba(0, 0, 0, 0.5);
             --transition-speed: 0.4s ease-out;
             --neon-glow-primary: 0 0 15px rgba(190, 41, 236, 0.8), 0 0 25px rgba(190, 41, 236, 0.5);
@@ -22,7 +21,7 @@
         }
 
         /* ------------------------------------- */
-        /* TELA DE INTRODUÇÃO (NOVO) */
+        /* TELA DE INTRODUÇÃO */
         /* ------------------------------------- */
         #introScreen {
             position: fixed;
@@ -31,7 +30,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, var(--background-dark), rgba(10, 10, 10, 0.95));
-            z-index: 1000; /* Fica acima de tudo */
+            z-index: 1000;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -43,7 +42,7 @@
 
         #introScreen.hidden {
             opacity: 0;
-            pointer-events: none; /* Permite o clique no conteúdo atrás */
+            pointer-events: none;
         }
 
         #introScreen h1 {
@@ -98,7 +97,7 @@
         }
         
         /* ------------------------------------- */
-        /* ESTILIZAÇÃO BASE E LAYOUT (MANTIDO) */
+        /* ESTILIZAÇÃO BASE E LAYOUT (OTIMIZADO) */
         /* ------------------------------------- */
         body {
             font-family: 'Montserrat', sans-serif;
@@ -112,7 +111,7 @@
             min-height: 100vh;
             position: relative;
             background-color: rgba(0, 0, 0, 0.6); 
-            overflow-x: hidden;
+            overflow-x: hidden; /* Garante que não haja rolagem lateral indesejada */
         }
 
         /* Container Principal do Conteúdo */
@@ -120,12 +119,13 @@
             display: flex;
             flex-direction: column; 
             align-items: center;
-            gap: 30px;
+            gap: 25px; /* Ajuste para celular */
             background-color: rgba(255, 255, 255, 0.02); 
             border-radius: 25px;
-            padding: 40px 20px; 
+            padding: 30px 15px; /* Ajuste para celular */
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--card-shadow); 
-            width: 90%; 
+            width: 95%; /* Aumenta para 95% da largura da tela */
+            max-width: 950px;
             box-sizing: border-box; 
             z-index: 10;
             backdrop-filter: blur(15px); 
@@ -139,13 +139,13 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Adaptação para telas maiores (lado a lado) */
+        /* Adaptação para telas maiores (desktop) */
         @media (min-width: 768px) {
             .main-wrapper {
                 flex-direction: row; 
                 justify-content: center;
                 padding: 40px;
-                max-width: 950px; 
+                width: 90%;
             }
              .music-player-card {
                 width: 350px; 
@@ -157,7 +157,7 @@
             background: rgba(255, 255, 255, 0.05); 
             backdrop-filter: blur(5px);
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px; /* Ajuste para celular */
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
             width: 100%; 
             max-width: 350px; 
@@ -177,7 +177,7 @@
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px; /* Ajuste para celular */
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
             width: 100%;
             max-width: 500px;
@@ -187,23 +187,23 @@
             transition: transform var(--transition-speed), box-shadow var(--transition-speed);
         }
 
-        /* Os demais estilos (album-cover, progress-bar, control-buttons, etc.) foram mantidos */
-        
+        /* Capa do Álbum/Fotos */
         .album-cover {
             width: 100%;
-            height: 280px;
+            height: auto; /* Deixa a altura flexível para celular */
+            max-height: 280px; 
             border-radius: 15px;
             object-fit: cover;
-            margin-bottom: 25px;
+            margin-bottom: 20px; 
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px var(--secondary-color);
             border: 3px solid var(--secondary-color);
             transition: opacity 1s ease-in-out; 
         }
 
         .icon-quote {
-            font-size: 1.6em;
+            font-size: 1.4em; /* Ajuste para celular */
             color: var(--text-light);
-            margin-bottom: 18px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -224,7 +224,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 18px;
+            gap: 15px;
         }
 
         .progress-bar {
@@ -302,12 +302,12 @@
 
         .lyrics-text {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.15em;
-            line-height: 1.8;
+            font-size: 1em; /* Ajuste para celular */
+            line-height: 1.6;
             color: #f0f0f0;
             white-space: pre-wrap;
-            margin-bottom: 25px;
-            max-height: 350px;
+            margin-bottom: 20px;
+            max-height: 300px; /* Ajuste para celular */
             overflow-y: auto;
             padding-right: 10px;
         }
@@ -333,15 +333,15 @@
 
         .song-info {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1em;
+            font-size: 0.9em; /* Ajuste para celular */
             color: #ccc;
             border-top: 1px solid rgba(255, 255, 255, 0.15);
-            padding-top: 20px;
+            padding-top: 15px; /* Ajuste para celular */
         }
         .song-title {
             font-weight: 700;
             color: var(--secondary-color);
-            font-size: 1.2em;
+            font-size: 1.1em;
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
         .song-artist {
@@ -352,13 +352,34 @@
 
         .footer-signature {
             position: absolute;
-            bottom: 20px;
+            bottom: 10px; /* Ajuste para celular */
             color: #888;
-            font-size: 0.85em;
+            font-size: 0.75em; /* Ajuste para celular */
             z-index: 10;
             font-style: italic;
             text-shadow: 0 0 5px rgba(0,0,0,0.8);
             letter-spacing: 0.5px;
+        }
+        
+        /* ------------------------------------- */
+        /* MEDIA QUERY PARA AJUSTES FINOS (CELULAR) */
+        /* ------------------------------------- */
+        @media (max-width: 450px) {
+            #introScreen h1 {
+                font-size: 2.2em;
+            }
+            .main-wrapper {
+                padding: 20px 10px; 
+            }
+            .lyrics-card, .music-player-card {
+                padding: 15px;
+            }
+            .control-buttons {
+                font-size: 1.5em;
+            }
+            .play-button i {
+                font-size: 1.8em;
+            }
         }
     </style>
 
@@ -377,22 +398,16 @@
         function changeImage() {
             const albumCover = document.getElementById('albumCover');
             
-            // Adiciona a classe de transição para efeito de "fade out"
             albumCover.style.opacity = '0'; 
 
             setTimeout(() => {
-                // Atualiza o índice para a próxima imagem (ou volta para o início)
                 currentImageIndex = (currentImageIndex + 1) % imageUrls.length;
-                
-                // Altera a fonte da imagem
                 albumCover.src = imageUrls[currentImageIndex];
-                
-                // Remove a classe de transição para efeito de "fade in"
                 albumCover.style.opacity = '1'; 
-            }, 500); // 500ms (metade do tempo da transição CSS)
+            }, 500);
         }
 
-        // NOVO: Função para iniciar tudo após o clique
+        // FUNÇÃO REVISADA PARA GARANTIR O PLAY EM NAVEGADORES MÓVEIS
         function startExperience() {
             const introScreen = document.getElementById('introScreen');
             const audioPlayer = document.getElementById('audioPlayer');
@@ -401,14 +416,27 @@
             // 1. Esconde a tela de introdução
             introScreen.classList.add('hidden');
 
-            // 2. Inicia a reprodução do Áudio (AGORA FUNCIONA)
-            audioPlayer.play();
-            // Muda o botão de Play para Pause
-            document.getElementById('playPauseIcon').classList.remove('fa-play');
-            document.getElementById('playPauseIcon').classList.add('fa-pause');
+            // 2. Tenta iniciar a reprodução do Vídeo (MUITO IMPORTANTE)
+            videoBackground.play().catch(error => {
+                 console.log("Erro ao tentar reproduzir o vídeo de fundo: ", error);
+            });
 
-            // 3. Inicia a reprodução do Vídeo (AGORA FUNCIONA)
-            videoBackground.play();
+            // 3. Tenta iniciar a reprodução do Áudio
+            audioPlayer.volume = 1;
+            
+            // Tentativa de Play com tratamento de erro
+            audioPlayer.play().then(() => {
+                // Sucesso na reprodução
+                document.getElementById('playPauseIcon').classList.remove('fa-play');
+                document.getElementById('playPauseIcon').classList.add('fa-pause');
+            }).catch(error => {
+                // Falha (Bloqueio do Navegador). O usuário precisará clicar no Play/Pause.
+                console.warn("Reprodução de áudio bloqueada. O usuário pode precisar interagir novamente.");
+                
+                // Ativa o ícone de Play (parado) para sinalizar que precisa ser clicado.
+                document.getElementById('playPauseIcon').classList.remove('fa-pause');
+                document.getElementById('playPauseIcon').classList.add('fa-play');
+            });
 
             // 4. Inicia a troca de imagens
             setInterval(changeImage, 4000); 
@@ -432,7 +460,7 @@
             // Garante que a primeira imagem seja carregada
             albumCover.src = imageUrls[currentImageIndex];
 
-            // NOVO: Adiciona o evento de clique para iniciar
+            // Adiciona o evento de clique para iniciar
             document.getElementById('startButton').addEventListener('click', startExperience);
 
 
@@ -448,11 +476,9 @@
                 totalTimeSpan.textContent = formatTime(audioPlayer.duration);
                 currentTimeSpan.textContent = '0:00';
                 progressBar.style.width = '0%';
-                
-                // Remove o autoplay aqui, ele será feito pelo startExperience()
             });
 
-            // Ao tocar/pausar, atualiza o ícone (Font Awesome)
+            // Ao tocar/pausar (usando o botão do player), atualiza o ícone
             playButton.addEventListener('click', () => {
                 if (audioPlayer.paused) {
                     audioPlayer.play();
@@ -483,7 +509,6 @@
             });
 
             // Garante que o ícone inicial seja o de Play (parado)
-            // Agora isso é manipulado pela função startExperience
             playPauseIcon.classList.remove('fa-pause');
             playPauseIcon.classList.add('fa-play');
         });
