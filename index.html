@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Joia da Minha Canção</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Parisienne&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* Variáveis CSS para cores e transições */
+        :root {
+            --primary-color: #000000; /* Roxo vibrante */
+            --secondary-color: #000000; /* Rosa choque */
+            --background-dark: #0a0a0a; /* Preto quase sólido */
+            --text-light: #f0f0f0;
+            --card-bg: rgba(255, 255, 255, 0.05); /* Mais transparente */
+            --card-shadow: rgba(0, 0, 0, 0.5); /* Sombra mais intensa */
+            --transition-speed: 0.4s ease-out;
+            --neon-glow-primary: 0 0 15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(190, 41, 236, 0.5);
+            --neon-glow-secondary: 0 0 15px rgba(255, 105, 180, 0.8), 0 0 25px rgba(255, 105, 180, 0.5);
+        }
+
+        /* ------------------------------------- */
+        /* ESTILO DO FUNDO DE VÍDEO (NOVO) */
+        /* ------------------------------------- */
+        #video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1; /* Manda o vídeo para o fundo */
+            background-size: cover;
+            /* Garante que o vídeo fique por trás de tudo e cubra a tela */
+        }
+        
+        /* ------------------------------------- */
+        /* ESTILIZAÇÃO BASE E LAYOUT (ATUALIZADO) */
+        /* ------------------------------------- */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            color: var(--text-light);
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            /* Removemos o gradiente animado daqui */
+            position: relative;
+            /* Adiciona uma camada escura sobre o vídeo para o texto se destacar */
+            background-color: rgba(0, 0, 0, 0.6); 
+            overflow-x: hidden; /* Evita rolagem horizontal */
+        }
+
+        /* Container Principal do Conteúdo */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            /* Aumenta a transparência dos cards ou o blur */
+            background-color: rgba(255, 255, 255, 0.02); 
+            border-radius: 25px;
+            padding: 40px;
+            /* Aplicando Brilho Neon na borda do Container */
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--card-shadow); 
+            max-width: 950px;
+            width: 90%;
+            z-index: 10;
+            backdrop-filter: blur(15px); /* Efeito de vidro fosco, importante para fundo de vídeo */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            animation: slideInUp 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        /* As animações slideInUp e hover foram mantidas... */
+
+        @keyframes slideInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Adaptação para telas maiores (lado a lado) */
+        @media (min-width: 768px) {
+            .main-wrapper {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
+        /* Player de Música - Design Customizado (Card) */
+        .music-player-card {
+            /* Manteve a transparência e blur para combinar com o fundo */
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
+            width: 350px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: left;
+            position: relative;
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        /* Seção da Letra da Música (Card) */
+        .lyrics-card {
+            /* Manteve a transparência e blur para combinar com o fundo */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            max-width: 500px;
+            text-align: left;
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        /* Os demais estilos (album-cover, progress-bar, control-buttons, etc.) foram mantidos */
+
+        .album-cover {
+            width: 100%;
+            height: 280px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 25px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 10px var(--secondary-color);
+            border: 3px solid var(--secondary-color);
+            transition: opacity 1s ease-in-out; 
+        }
+
+        .icon-quote {
+            font-size: 1.6em;
+            color: var(--text-light);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Parisienne', cursive;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+        .icon-quote::before {
+            content: '❝';
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.5em;
+            color: var(--primary-color);
+            text-shadow: var(--neon-glow-primary);
+        }
+        
+        .player-controls {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 8px;
+            position: absolute;
+            transition: width 0.1s linear;
+            box-shadow: var(--neon-glow-secondary);
+        }
+        .time-labels {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #aaa;
+            font-weight: 600;
+        }
+
+        .control-buttons {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 1.9em;
+            color: #eee;
+        }
+        .control-buttons i {
+            cursor: pointer;
+            transition: color var(--transition-speed), transform var(--transition-speed);
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        }
+        .control-buttons i:hover {
+            color: var(--primary-color);
+            transform: scale(1.2) translateY(-2px);
+            text-shadow: var(--neon-glow-primary);
+        }
+        .play-button i {
+            font-size: 2em;
+            color: var(--secondary-color);
+            transform: scale(1.2);
+            text-shadow: var(--neon-glow-secondary);
+        }
+        .play-button i:hover {
+            transform: scale(1.3);
+            color: var(--primary-color);
+            text-shadow: var(--neon-glow-primary);
+        }
+        
+        .heart-like {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 2em;
+            color: var(--secondary-color);
+            cursor: pointer;
+            transition: transform var(--transition-speed), color var(--transition-speed);
+            text-shadow: var(--neon-glow-secondary);
+        }
+        .heart-like:hover {
+            transform: scale(1.4) rotate(-5deg);
+            color: var(--primary-color);
+            text-shadow: var(--neon-glow-primary);
+        }
+
+        .lyrics-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #f0f0f0;
+            white-space: pre-wrap;
+            margin-bottom: 25px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        /* Scrollbar styling */
+        .lyrics-text::-webkit-scrollbar {
+            width: 8px;
+        }
+        .lyrics-text::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .lyrics-text::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 5px var(--primary-color);
+        }
+        .lyrics-text::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+            box-shadow: 0 0 5px var(--secondary-color);
+        }
+
+
+        .song-info {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
+            color: #ccc;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 20px;
+        }
+        .song-title {
+            font-weight: 700;
+            color: var(--secondary-color);
+            font-size: 1.2em;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+        .song-artist {
+            font-weight: 500;
+            color: var(--primary-color);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-signature {
+            position: absolute;
+            bottom: 20px;
+            color: #888;
+            font-size: 0.85em;
+            z-index: 10;
+            font-style: italic;
+            text-shadow: 0 0 5px rgba(0,0,0,0.8);
+            letter-spacing: 0.5px;
+        }
+    </style>
+
+    <script>
+        // Array com os links das imagens que vão ser trocadas
+        const imageUrls = [
+            // Imagens que você forneceu
+            "https://media.discordapp.net/attachments/1438629911249293355/1438629942492528731/35c14564-2748-4bf2-bda0-f2cf3dcd0776.png?ex=6917940a&is=6916428a&hm=0de05b70344c836b4f2d8126f1ef6b77b8fec507e7b853519a4228dbd34fdb8d&=&format=webp&quality=lossless&width=566&height=1006",
+            "https://media.discordapp.net/attachments/1438629911249293355/1438635633512943656/c4b05cc9-c277-4041-8c93-409f17fdfda1.png?ex=69179957&is=691647d7&hm=0956f93c71584cb1d277ebc415a5ed402a7f7336ceb52f64306c17abe5c42a92&=&format=webp&quality=lossless&width=566&height=1006", 
+            "https://media.discordapp.net/attachments/1438629911249293355/1438635692480659527/20854f72-a3d3-468b-8c87-2c19a87b37f4.png?ex=69179965&is=691647e5&hm=2c5b47b31bec27fc2e024f66346415a8d69c3dbe9619914250819ccad5dd5fb0&=&format=webp&quality=lossless&width=1203&height=902",
+            // Adicione mais links de fotos do casal aqui!
+        ];
+
+        let currentImageIndex = 0;
+
+        function changeImage() {
+            const albumCover = document.getElementById('albumCover');
+            
+            // Adiciona a classe de transição para efeito de "fade out"
+            albumCover.style.opacity = '0'; 
+
+            setTimeout(() => {
+                // Atualiza o índice para a próxima imagem (ou volta para o início)
+                currentImageIndex = (currentImageIndex + 1) % imageUrls.length;
+                
+                // Altera a fonte da imagem
+                albumCover.src = imageUrls[currentImageIndex];
+                
+                // Remove a classe de transição para efeito de "fade in"
+                albumCover.style.opacity = '1'; 
+            }, 500); // 500ms (metade do tempo da transição CSS)
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicia a troca de imagens a cada 4 segundos (4000 milissegundos)
+            setInterval(changeImage, 4000); 
+
+            // JavaScript para o controle real da música (MANTIDO)
+            const audioPlayer = document.getElementById('audioPlayer');
+            const playButton = document.querySelector('.play-button');
+            const playPauseIcon = document.getElementById('playPauseIcon');
+            const currentTimeSpan = document.getElementById('currentTime');
+            const totalTimeSpan = document.getElementById('totalTime');
+            const progressBar = document.querySelector('.progress');
+            const albumCover = document.getElementById('albumCover'); // Pega o elemento da imagem
+
+            // Garante que a primeira imagem seja carregada
+            albumCover.src = imageUrls[currentImageIndex];
+
+
+            // Função para formatar o tempo (MM:SS)
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = Math.floor(seconds % 60);
+                return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+            }
+
+            // Ao carregar a música, atualiza o tempo total
+            audioPlayer.addEventListener('loadedmetadata', () => {
+                totalTimeSpan.textContent = formatTime(audioPlayer.duration);
+                currentTimeSpan.textContent = '0:00';
+                progressBar.style.width = '0%';
+                
+                // Tenta dar Play
+                audioPlayer.play().catch(error => {
+                    console.log("Autoplay blocked. User needs to interact.", error);
+                    // Garante que o ícone inicial seja o de Play (parado)
+                    playPauseIcon.classList.remove('fa-pause');
+                    playPauseIcon.classList.add('fa-play');
+                });
+            });
+
+            // Ao tocar/pausar, atualiza o ícone (Font Awesome)
+            playButton.addEventListener('click', () => {
+                if (audioPlayer.paused) {
+                    audioPlayer.play();
+                    playPauseIcon.classList.remove('fa-play');
+                    playPauseIcon.classList.add('fa-pause');
+                } else {
+                    audioPlayer.pause();
+                    playPauseIcon.classList.remove('fa-pause');
+                    playPauseIcon.classList.add('fa-play');
+                }
+            });
+
+            // Ao reproduzir, atualiza o tempo atual e a barra de progresso
+            audioPlayer.addEventListener('timeupdate', () => {
+                currentTimeSpan.textContent = formatTime(audioPlayer.currentTime);
+                const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+            });
+
+            // Se a música acabar
+            audioPlayer.addEventListener('ended', () => {
+                if (!audioPlayer.loop) {
+                    playPauseIcon.classList.remove('fa-pause');
+                    playPauseIcon.classList.add('fa-play');
+                    currentTimeSpan.textContent = '0:00';
+                    progressBar.style.width = '0%';
+                }
+            });
+
+            // Garante que o ícone inicial seja o de Play (parado)
+            playPauseIcon.classList.remove('fa-pause');
+            playPauseIcon.classList.add('fa-play');
+        });
+    </script>
+</head>
+<body>
+    
+    <video autoplay loop muted id="video-background">
+        <source src="https://cdn.discordapp.com/attachments/1438629911249293355/1438643199781376020/WhatsApp_Video_2025-11-13_at_18.33.59.mp4?ex=6917a063&is=69164ee3&hm=e6d8872d1c68f46f99e4f33a17af57ee3b4907370bd0f3df186b23103abd6a9a&" type="video/mp4">
+        Seu navegador não suporta vídeos de fundo.
+    </video>
+
+    <div class="main-wrapper">
+        <div class="music-player-card">
+            <img class="album-cover" id="albumCover" src="" alt="Nossa Galeria de Fotos">
+            
+            <div class="icon-quote">❝ <span style="font-family: 'Montserrat', sans-serif; font-weight: 300;">1 ANO COM VOCÊ</span></div>
+
+            <div class="player-controls">
+                <div class="progress-bar"><div class="progress"></div></div>
+                <div class="time-labels">
+                    <span id="currentTime">0:00</span>
+                    <span id="totalTime">0:00</span> </div>
+                <div class="control-buttons">
+                    <i class="fas fa-random"></i> 
+                    <i class="fas fa-backward"></i> 
+                    <span class="play-button">
+                        <i id="playPauseIcon" class="fas fa-play"></i> 
+                    </span>
+                    <i class="fas fa-forward"></i> 
+                    <i class="fas fa-redo-alt"></i> 
+                </div>
+            </div>
+            <span class="heart-like"><i class="fas fa-heart"></i></span>
+
+            <audio id="audioPlayer" autoplay loop style="position: absolute; left: -9999px; opacity: 0;">
+                <source src="https://server1.mtabrasil.com.br/play?id=hh9WgYHRuhU" type="audio/mp3">
+                Seu navegador não suporta o elemento de áudio.
+            </audio>
+        </div>
+
+        <div class="lyrics-card">
+            <pre class="lyrics-text">
+ A Nossa Primeira Melodia
+
+Hoje não é só mais um dia.
+É a celebração do nosso primeiro "para sempre".
+365 dias, incontáveis sorrisos,
+e um amor que se tornou a minha canção favorita.
+
+Você, meu amor,
+é a poesia que eu nunca soube escrever,
+a melodia que faltava na minha vida.
+Desde o  dia 14  , o mundo ganhou uma cor nova,
+e meu coração, um lar.
+
+Lembro de cada momento,
+das pequenas piadas, dos abraços apertados,
+da cumplicidade que cresce a cada olhar.
+Se a vida fosse um álbum, este seria o nosso primeiro sucesso.
+
+Que venham muitos anos,
+muitas canções, muitos versos.
+Meu amor por você é um refrão que não cansa de tocar.
+Feliz nosso primeiro ano.
+ Eu te amo!
+</pre>
+            <div class="song-info">
+                <span class="song-title">FELIZ 1 ANO DE NAMORO</span> - <span class="song-artist">DE MIM PARA VOCÊ</span>
+            </div>
+        </div>
+    </div>
+
+    <p class="footer-signature">
+        Criado com carinho e inspiração para você, meu amor, por [JOSUE TINEL GOMES]
+    </p>
+</body>
+</html>
