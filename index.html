@@ -10,19 +10,19 @@
     <style>
         /* Variáveis CSS para cores e transições */
         :root {
-            --primary-color: #000000; /* Roxo vibrante */
-            --secondary-color: #000000; /* Rosa choque */
+            --primary-color: #be29ec; /* Roxo vibrante */
+            --secondary-color: #ff69b4; /* Rosa choque */
             --background-dark: #0a0a0a; /* Preto quase sólido */
             --text-light: #f0f0f0;
             --card-bg: rgba(255, 255, 255, 0.05); /* Mais transparente */
             --card-shadow: rgba(0, 0, 0, 0.5); /* Sombra mais intensa */
             --transition-speed: 0.4s ease-out;
-            --neon-glow-primary: 0 0 15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(190, 41, 236, 0.5);
+            --neon-glow-primary: 0 0 15px rgba(190, 41, 236, 0.8), 0 0 25px rgba(190, 41, 236, 0.5);
             --neon-glow-secondary: 0 0 15px rgba(255, 105, 180, 0.8), 0 0 25px rgba(255, 105, 180, 0.5);
         }
 
         /* ------------------------------------- */
-        /* ESTILO DO FUNDO DE VÍDEO (NOVO) */
+        /* ESTILO DO FUNDO DE VÍDEO */
         /* ------------------------------------- */
         #video-background {
             position: fixed;
@@ -32,13 +32,12 @@
             min-height: 100%;
             width: auto;
             height: auto;
-            z-index: -1; /* Manda o vídeo para o fundo */
+            z-index: -1; 
             background-size: cover;
-            /* Garante que o vídeo fique por trás de tudo e cubra a tela */
         }
         
         /* ------------------------------------- */
-        /* ESTILIZAÇÃO BASE E LAYOUT (ATUALIZADO) */
+        /* ESTILIZAÇÃO BASE E LAYOUT (CORRIGIDO) */
         /* ------------------------------------- */
         body {
             font-family: 'Montserrat', sans-serif;
@@ -50,36 +49,32 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            /* Removemos o gradiente animado daqui */
             position: relative;
-            /* Adiciona uma camada escura sobre o vídeo para o texto se destacar */
             background-color: rgba(0, 0, 0, 0.6); 
-            overflow-x: hidden; /* Evita rolagem horizontal */
+            overflow-x: hidden;
         }
 
-        /* Container Principal do Conteúdo */
+        /* Container Principal do Conteúdo (CORRIGIDO) */
         .main-wrapper {
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* Padrão: empilhar verticalmente no celular */
             align-items: center;
             gap: 30px;
-            /* Aumenta a transparência dos cards ou o blur */
             background-color: rgba(255, 255, 255, 0.02); 
             border-radius: 25px;
-            padding: 40px;
-            /* Aplicando Brilho Neon na borda do Container */
+            padding: 40px 20px; /* Reduz o padding lateral para o celular */
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--card-shadow); 
-            max-width: 950px;
-            width: 90%;
+            /* Removido max-width aqui para dar espaço no celular */
+            width: 90%; /* Ocupa 90% da largura da tela */
+            box-sizing: border-box; /* Adicionado para incluir padding na largura */
             z-index: 10;
-            backdrop-filter: blur(15px); /* Efeito de vidro fosco, importante para fundo de vídeo */
+            backdrop-filter: blur(15px); 
             border: 1px solid rgba(255, 255, 255, 0.15);
             animation: slideInUp 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
             opacity: 0;
             transform: translateY(50px);
         }
-        /* As animações slideInUp e hover foram mantidas... */
-
+        
         @keyframes slideInUp {
             to { opacity: 1; transform: translateY(0); }
         }
@@ -87,20 +82,25 @@
         /* Adaptação para telas maiores (lado a lado) */
         @media (min-width: 768px) {
             .main-wrapper {
-                flex-direction: row;
+                flex-direction: row; /* Volta a ser lado a lado em telas maiores */
                 justify-content: center;
+                padding: 40px;
+                max-width: 950px; /* Limita a largura em telas maiores */
+            }
+             .music-player-card {
+                width: 350px; /* Volta para a largura fixa no desktop */
             }
         }
 
-        /* Player de Música - Design Customizado (Card) */
+        /* Player de Música - Design Customizado (Card) (CORRIGIDO) */
         .music-player-card {
-            /* Manteve a transparência e blur para combinar com o fundo */
             background: rgba(255, 255, 255, 0.05); 
             backdrop-filter: blur(5px);
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
-            width: 350px;
+            width: 100%; /* Ocupa 100% da largura do .main-wrapper no celular */
+            max-width: 350px; /* Limite máximo para não ficar enorme no desktop */
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
@@ -114,7 +114,6 @@
 
         /* Seção da Letra da Música (Card) */
         .lyrics-card {
-            /* Manteve a transparência e blur para combinar com o fundo */
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
             border-radius: 20px;
@@ -128,8 +127,8 @@
             transition: transform var(--transition-speed), box-shadow var(--transition-speed);
         }
 
-        /* Os demais estilos (album-cover, progress-bar, control-buttons, etc.) foram mantidos */
-
+        /* Os demais estilos não foram alterados */
+        
         .album-cover {
             width: 100%;
             height: 280px;
@@ -456,7 +455,7 @@ e um amor que se tornou a minha canção favorita.
 Você, meu amor,
 é a poesia que eu nunca soube escrever,
 a melodia que faltava na minha vida.
-Desde o  dia 14  , o mundo ganhou uma cor nova,
+Desde o dia 14, o mundo ganhou uma cor nova,
 e meu coração, um lar.
 
 Lembro de cada momento,
@@ -468,7 +467,7 @@ Que venham muitos anos,
 muitas canções, muitos versos.
 Meu amor por você é um refrão que não cansa de tocar.
 Feliz nosso primeiro ano.
- Eu te amo!
+Eu te amo!
 </pre>
             <div class="song-info">
                 <span class="song-title">FELIZ 1 ANO DE NAMORO</span> - <span class="song-artist">DE MIM PARA VOCÊ</span>
